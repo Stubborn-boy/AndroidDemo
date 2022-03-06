@@ -1,3 +1,4 @@
+//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
 1。在终端或者Android Studio中的Terminal里输入命令，查看activity栈：
     adb shell dumpsys activity activities
 
