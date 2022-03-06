@@ -1,0 +1,26 @@
+1。在终端或者Android Studio中的Terminal里输入命令，查看activity栈：
+    adb shell dumpsys activity activities
+
+2。A打开B，B打开C，按返回键回到A。 把B的 launchMode="singleInstance"。
+
+3。获取当前线程的堆栈 Thread.currentThread().getStackTrace()
+
+4。#父view不拦截ACTION_DOWN，拦截ACTION_MOVE或ACTION_UP的时候，子view会收到ACTION_CANCEL。viewgroup移除view。window移除view。
+https://www.sohu.com/a/468807887_121124375
+Only perform take click actions if we were in the pressed state
+#当view调用onTouchEvent处理事件时，只要view的Clickable和long_clickable中有一个为true,那么它就会消耗这个事件，即onTouchEvent返回true，如Button。
+#当view的dispatchTouchEvent的ACTION_DOWN事件返回false，父view和activity也都返回false时，即都不消费down事件，那么后续move和up事件只有activity能收到。
+
+5。A打开B，A.onPause-》B.onCreate-》B.onStart-》B.onResume-》A.onStop。
+    按返回键 B.onPause-》A.onRestart-》A.onStart-》A.onResume-》B.onStop-》B.onDestroy
+
+6。不走onDestroy的情况。系统内存不足时, activity被回收。任务栏清理，上面第一个走onDestroy，下面的不走。强制停止进程。出现异常时。
+
+7。invalidate会调用onDraw，requestLayout会调用onMeasure，onLayout，onDraw。
+
+8。多次startService，onCreate执行一次，onStartCommand执行多次。多次调stopService，onDestroy只会执行一次。
+bindService调用多次，onCreate和onBind只会执行一次。未调用bindService，调用unbindService时，出异常。调用unbindService时会走onUnbind和onDestroy。
+
+
+
+
