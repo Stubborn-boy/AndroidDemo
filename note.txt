@@ -2,7 +2,11 @@
 1。在终端或者Android Studio中的Terminal里输入命令，查看activity栈：
     adb shell dumpsys activity activities
 
-2。A打开B，B打开C，按返回键回到A。 把B的 launchMode="singleInstance"。
+2。A打开B，B打开C，如果按返回键回到A，需要把B的 launchMode="singleInstance"。
+standard	邮件、mainfest中没有配置就默认标准模式
+singleTop	登录页面、WXPayEntryActivity、WXEntryActivity 、推送通知栏
+singleTask	程序模块逻辑入口:主页面（Fragment的containerActivity）、WebView页面、扫一扫页面、电商中：购物界面，确认订单界面，付款界面
+singleInstance	系统Launcher、锁屏键、来电显示，闹铃提醒等系统应用
 
 3。获取当前线程的堆栈 Thread.currentThread().getStackTrace()
 
@@ -17,7 +21,10 @@ Only perform take click actions if we were in the pressed state
 
 6。不走onDestroy的情况。系统内存不足时, activity被回收。任务栏清理，上面第一个走onDestroy，下面的不走。强制停止进程。出现异常时。
 
-7。invalidate会调用onDraw，requestLayout会调用onMeasure，onLayout，onDraw。
+7。invalidate会调用onDraw，requestLayout会调用onMeasure，onLayout，onDraw(不一定)。
+requestLayout触发onDraw可能是因为在在layout过程中发现l,t,r,b和以前不一样，那就会触发一次invalidate，所以触发了onDraw，
+也可能是因为别的原因导致mDirty非空（比如在跑动画）
+https://blog.csdn.net/litefish/article/details/52682152
 
 8。多次startService，onCreate执行一次，onStartCommand执行多次。多次调stopService，onDestroy只会执行一次。
 bindService调用多次，onCreate和onBind只会执行一次。未调用bindService，调用unbindService时，出异常。调用unbindService时会走onUnbind和onDestroy。
